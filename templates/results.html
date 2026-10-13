@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Scheme Recommendations - Welfare Scheme AI</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="container">
+            <h1>Welfare Scheme AI</h1>
+            <p>Scheme Recommendations</p>
+        </div>
+    </header>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="container">
+
+        <section class="results-card">
+
+            <h2>Recommended Welfare Schemes</h2>
+
+            <p class="result-description">
+                Results generated based on the profile of
+                <strong>{{ user.name }}</strong>.
+            </p>
+
+
+            <!-- LOOP THROUGH ALL SCHEMES -->
+            {% for result in results %}
+
+            <div class="scheme-card">
+
+                <!-- SCHEME HEADER -->
+                <div class="scheme-header">
+
+                    <div>
+
+                        <h3>
+                            {{ result.scheme_name }}
+                        </h3>
+
+                        <span class="domain">
+                            {{ result.domain }}
+                        </span>
+
+                    </div>
+
+
+                    <!-- ELIGIBILITY STATUS -->
+                    {% if result.eligible %}
+
+                    <span class="status eligible">
+                        Eligible
+                    </span>
+
+                    {% else %}
+
+                    <span class="status not-eligible">
+                        Not Eligible
+                    </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- DESCRIPTION -->
+                <p class="scheme-description">
+                    {{ result.description }}
+                </p>
+
+
+                <!-- MATCH SCORE -->
+                <div class="score-section">
+
+                    <div class="score-text">
+
+                        <strong>
+                            Match Score
+                        </strong>
+
+                        <span>
+                            {{ result.match_score }}%
+                        </span>
+
+                    </div>
+
+
+                    <!-- PROGRESS BAR -->
+                   <div class="progress-bar">
+
+    <div class="progress"
+         data-score="{{ result.match_score }}">
+    </div>
+
+</div>
+
+                    <!-- CRITERIA COUNT -->
+                    <p class="criteria-count">
+
+                        {{ result.satisfied }}
+                        out of
+                        {{ result.total }}
+                        criteria satisfied
+
+                    </p>
+
+                </div>
+
+
+                <!-- BENEFITS + DOCUMENTS -->
+                <div class="scheme-details">
+
+                    <div>
+
+                        <h4>
+                            Benefits
+                        </h4>
+
+                        <p>
+                            {{ result.benefits }}
+                        </p>
+
+                    </div>
+
+
+                    <div>
+
+                        <h4>
+                            Required Documents
+                        </h4>
+
+                        <p>
+                            {{ result.required_documents }}
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- EXPLAINABLE AI -->
+                <div class="explanation-box">
+
+                    {% if result.eligible %}
+
+                    <!-- ELIGIBLE EXPLANATION -->
+
+                    <h4>
+                        Why You Are Eligible
+                    </h4>
+
+                    <p>
+                        Your profile satisfies all the eligibility
+                        criteria checked by the system.
+                    </p>
+
+                    <p>
+                        <strong>
+                            {{ result.satisfied }}
+                            out of
+                            {{ result.total }}
+                            criteria satisfied.
+                        </strong>
+                    </p>
+
+
+                    {% else %}
+
+                    <!-- NOT ELIGIBLE EXPLANATION -->
+
+                    <h4>
+                        Why You Are Not Eligible
+                    </h4>
+
+                    <p>
+                        Your profile does not satisfy all the eligibility
+                        criteria required for this scheme.
+                    </p>
+
+                    <p>
+                        <strong>
+                            {{ result.satisfied }}
+                            out of
+                            {{ result.total }}
+                            criteria satisfied.
+                        </strong>
+                    </p>
+
+
+                    <!-- FAILED CRITERIA -->
+                    {% if result.failed_criteria %}
+
+                    <div class="failed-section">
+
+                        <h4>
+                            Criteria Not Satisfied
+                        </h4>
+
+                        <ul>
+
+                            {% for criterion in result.failed_criteria %}
+
+                            <li>
+                                {{ criterion }}
+                            </li>
+
+                            {% endfor %}
+
+                        </ul>
+
+                    </div>
+
+                    {% endif %}
+
+                    {% endif %}
+
+                </div>
+
+
+            </div>
+
+            {% endfor %}
+
+
+            <!-- BACK TO PROFILE -->
+            <div class="back-section">
+
+                <a href="/profile" class="back-button">
+                    Check Another Profile
+                </a>
+
+            </div>
+
+
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer>
+
+        <p>
+            Mini Project | Department of AI & Data Science
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>

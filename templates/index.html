@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Welfare Scheme AI</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="container">
+            <h1>Welfare Scheme AI</h1>
+            <p>AI-Powered Welfare Scheme Eligibility and Recommendation System</p>
+        </div>
+    </header>
+
+
+    <main class="container">
+
+        <section class="hero">
+
+            <h2>Find Welfare Schemes You May Be Eligible For</h2>
+
+            <p>
+                Enter your details and the system will analyze your profile
+                and recommend relevant welfare schemes.
+            </p>
+
+            <a href="/profile" class="start-button">Get Started</a>
+
+        </section>
+
+
+        <section class="info-section">
+
+            <div class="info-card">
+                <h3>Education</h3>
+                <p>
+                    Find relevant education and scholarship schemes.
+                </p>
+            </div>
+
+            <div class="info-card">
+                <h3>Agriculture</h3>
+                <p>
+                    Find welfare schemes relevant to farmers and agriculture.
+                </p>
+            </div>
+
+            <div class="info-card">
+                <h3>Smart Recommendations</h3>
+                <p>
+                    Get recommendations based on your personal profile.
+                </p>
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <footer>
+        <p>Mini Project | Department of AI & Data Science</p>
+    </footer>
+
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    
+
+</body>
+</html>
