@@ -27,18 +27,50 @@
 
         <section class="results-card">
 
-            <h2>Recommended Welfare Schemes</h2>
+            <h2>Scheme Eligibility Results</h2>
 
             <p class="result-description">
                 Results generated based on the profile of
-                <strong>{{ user.name }}</strong>.
+                <strong>{{ user.name }}</strong>. Schemes with a known unmet requirement
+                are marked not eligible and are not ranked. Missing details are shown separately.
             </p>
 
+            <details class="submitted-profile">
+                <summary>View the information you entered</summary>
+                <div class="profile-entry-groups">
+                    {% for section in profile_sections %}
+                    <section>
+                        <h3>{{ section.title }}</h3>
+                        <dl>
+                            {% for entry in section.entries %}
+                            <div class="profile-entry">
+                                <dt>{{ entry.label }}</dt>
+                                <dd>{{ entry.value }}</dd>
+                            </div>
+                            {% endfor %}
+                        </dl>
+                    </section>
+                    {% endfor %}
+                </div>
+            </details>
 
-            <!-- LOOP THROUGH ALL SCHEMES -->
+
+            <!-- Group schemes by eligibility outcome -->
             {% for result in results %}
 
-            <div class="scheme-card">
+            {% if loop.changed(result.result_group) %}
+            {% if not loop.first %}
+                </div>
+            </section>
+            {% endif %}
+            <section class="scheme-group scheme-group-{{ result.result_group }}">
+                <header class="scheme-group-heading">
+                    <h3>{{ result.result_group_label }}</h3>
+                </header>
+                <div class="scheme-group-cards">
+            {% endif %}
+
+            <article class="scheme-card scheme-card-{{ result.result_group }}">
 
                 <!-- SCHEME HEADER -->
                 <div class="scheme-header">
@@ -56,20 +88,43 @@
                     </div>
 
 
+                    <div class="scheme-badges">
+                    {% if result.rank %}
+                    <span class="scheme-rank">Rank #{{ result.rank }}</span>
+                    {% else %}
+                    <span class="scheme-unranked">Not ranked</span>
+                    {% endif %}
+
                     <!-- ELIGIBILITY STATUS -->
-                    {% if result.eligible %}
+                    {% if result.official_requirement_failed %}
+
+                    <span class="status not-eligible">Not Eligible</span>
+
+                    {% elif result.eligible %}
 
                     <span class="status eligible">
                         Eligible
                     </span>
 
+                    {% elif result.criteria_configured %}
+
+                    {% if result.missing_criteria %}
+                    <span class="status needs-criteria">More Information Needed</span>
                     {% else %}
 
                     <span class="status not-eligible">
                         Not Eligible
                     </span>
+                    {% endif %}
+
+                    {% else %}
+
+                    <span class="status needs-criteria">
+                        More Information Needed
+                    </span>
 
                     {% endif %}
+                    </div>
 
                 </div>
 
@@ -77,6 +132,10 @@
                 <!-- DESCRIPTION -->
                 <p class="scheme-description">
                     {{ result.description }}
+                </p>
+
+                <p class="result-summary result-summary-{{ result.result_group }}">
+                    {{ result.summary_reason }}
                 </p>
 
 
@@ -90,7 +149,11 @@
                         </strong>
 
                         <span>
+                            {% if result.rankable %}
                             {{ result.match_score }}%
+                            {% else %}
+                            Not available
+                            {% endif %}
                         </span>
 
                     </div>
@@ -100,7 +163,7 @@
                    <div class="progress-bar">
 
     <div class="progress"
-         data-score="{{ result.match_score }}">
+         data-score="{{ result.match_score if result.rankable else 0 }}">
     </div>
 
 </div>
@@ -111,7 +174,7 @@
                         {{ result.satisfied }}
                         out of
                         {{ result.total }}
-                        criteria satisfied
+                        configured criteria satisfied
 
                     </p>
 
@@ -152,7 +215,66 @@
                 <!-- EXPLAINABLE AI -->
                 <div class="explanation-box">
 
-                    {% if result.eligible %}
+                    {% if result.satisfied_criteria %}
+                    <div class="satisfied-section">
+                        <h4>Criteria Satisfied</h4>
+                        <ul>
+                            {% for criterion in result.satisfied_criteria %}
+                            <li>{{ criterion }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+
+                    {% if result.eligibility_guidance %}
+                    <div class="eligibility-guidance">
+                        <h4>Eligibility Requirements and Profile Check</h4>
+                        <div class="requirement-list">
+                            {% for item in result.eligibility_guidance %}
+                            <div class="requirement-row requirement-{{ item.outcome|lower|replace(' ', '-') }}">
+                                <span class="requirement-status" aria-label="{{ item.outcome }}">
+                                    {% if item.outcome == "Satisfied" %}✓
+                                    {% elif item.outcome == "Not satisfied" %}×
+                                    {% else %}i{% endif %}
+                                </span>
+                                <div>
+                                    <strong>{{ item.label }}</strong>
+                                    <p>{{ item.description }}</p>
+                                    <small>{{ item.detail }}</small>
+                                </div>
+                                <span class="requirement-outcome">{{ item.outcome }}</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if result.official_requirement_failed %}
+
+                    <h4>Why This Scheme Is Not Eligible</h4>
+                    <p>Your profile does not meet at least one known scheme requirement. See the requirement check above.</p>
+
+                    {% elif not result.criteria_configured %}
+
+                    <h4>Eligibility Cannot Be Assessed Yet</h4>
+                    <p>
+                        This scheme does not have enough detailed eligibility criteria configured.
+                        Occupation is checked when listed, but it cannot establish eligibility by itself.
+                        Check the official scheme details before applying.
+                    </p>
+
+
+                    {% elif result.missing_criteria %}
+
+                    <h4>More Information Needed</h4>
+                    <p>Enter these details to check all scheme requirements:</p>
+                    <ul>
+                        {% for criterion in result.missing_criteria %}
+                        <li>{{ criterion }}</li>
+                        {% endfor %}
+                    </ul>
+
+                    {% elif result.eligible %}
 
                     <!-- ELIGIBLE EXPLANATION -->
 
@@ -170,7 +292,7 @@
                             {{ result.satisfied }}
                             out of
                             {{ result.total }}
-                            criteria satisfied.
+                            configured criteria satisfied.
                         </strong>
                     </p>
 
@@ -183,17 +305,14 @@
                         Why You Are Not Eligible
                     </h4>
 
-                    <p>
-                        Your profile does not satisfy all the eligibility
-                        criteria required for this scheme.
-                    </p>
+                    <p>Your profile does not satisfy all the configured eligibility criteria.</p>
 
                     <p>
                         <strong>
                             {{ result.satisfied }}
                             out of
                             {{ result.total }}
-                            criteria satisfied.
+                            configured criteria satisfied.
                         </strong>
                     </p>
 
@@ -228,9 +347,14 @@
                 </div>
 
 
-            </div>
+            </article>
 
             {% endfor %}
+
+            {% if results %}
+                </div>
+            </section>
+            {% endif %}
 
 
             <!-- BACK TO PROFILE -->

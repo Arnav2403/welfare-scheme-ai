@@ -10,55 +10,36 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
-<body>
+<body class="home-page">
 
     <header class="header">
         <div class="container">
             <h1>Welfare Scheme AI</h1>
-            <p>AI-Powered Welfare Scheme Eligibility and Recommendation System</p>
+            <p>Find education and agriculture support that may fit your profile.</p>
         </div>
     </header>
 
 
     <main class="container">
 
-        <section class="hero">
+        <section class="hero home-hero">
 
-            <h2>Find Welfare Schemes You May Be Eligible For</h2>
+            <span class="home-eyebrow">MAHARASHTRA WELFARE SCHEMES</span>
+            <h2>Find schemes that fit your needs</h2>
 
             <p>
-                Enter your details and the system will analyze your profile
-                and recommend relevant welfare schemes.
+                Share a few details to check eligibility and see why each scheme may or may not apply.
             </p>
 
-            <a href="/profile" class="start-button">Get Started</a>
+            <a href="/profile" class="start-button">Check eligibility <span aria-hidden="true">→</span></a>
 
         </section>
 
 
-        <section class="info-section">
-
-            <div class="info-card">
-                <h3>Education</h3>
-                <p>
-                    Find relevant education and scholarship schemes.
-                </p>
-            </div>
-
-            <div class="info-card">
-                <h3>Agriculture</h3>
-                <p>
-                    Find welfare schemes relevant to farmers and agriculture.
-                </p>
-            </div>
-
-            <div class="info-card">
-                <h3>Smart Recommendations</h3>
-                <p>
-                    Get recommendations based on your personal profile.
-                </p>
-            </div>
-
+        <section class="home-topics" aria-label="Scheme categories">
+            <span>Education and scholarships</span>
+            <span>Agriculture support</span>
+            <span>Clear eligibility reasons</span>
         </section>
 
     </main>

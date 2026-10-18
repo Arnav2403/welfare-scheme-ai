@@ -55,8 +55,14 @@ def calculate_eligibility(user, criteria):
     """
 
     total_criteria = len(criteria)
+    has_substantive_criteria = any(
+        criterion["criterion_type"].strip().lower() != "occupation"
+        for criterion in criteria
+    )
     satisfied_criteria = 0
+    satisfied_details = []
     failed_criteria = []
+    missing_criteria = []
 
     # Map database criterion names to user table fields
     field_mapping = {
@@ -96,6 +102,28 @@ def calculate_eligibility(user, criteria):
     "freedom_fighter_child": "freedom_fighter_child"
 }
 
+    criterion_labels = {
+        "12th_percentage": "12th percentage",
+        "income": "Annual income",
+        "course_stream": "Course stream",
+        "is_pg_student": "Postgraduate student",
+        "minority_status": "Minority status",
+        "hostel_status": "Hostel status",
+        "farmer_id": "Farmer ID",
+        "land_holding": "Land holding",
+        "land_unit": "Land unit",
+        "land_ownership": "Land ownership",
+        "irrigation_type": "Irrigation type",
+        "crop_type": "Crop type",
+        "farmer_category": "Farmer category",
+        "tribal_status": "Tribal status",
+        "parent_occupation": "Parent occupation",
+        "disability_status": "Disability status",
+        "ex_serviceman_child": "Child of ex-serviceman",
+        "freedom_fighter_child": "Child of freedom fighter",
+    }
+    operator_labels = {"=": "is", "IN": "is one of", "<=": "≤", ">=": "≥", "<": "<", ">": ">"}
+
     for criterion in criteria:
 
         criterion_type = criterion["criterion_type"]
@@ -109,6 +137,11 @@ def calculate_eligibility(user, criteria):
 
         user_value = user.get(user_field)
 
+        if user_value is None or not str(user_value).strip():
+            label = criterion_labels.get(criterion_type, criterion_type.replace("_", " ").capitalize())
+            missing_criteria.append(label)
+            continue
+
         result = check_condition(
             user_value,
             operator,
@@ -117,9 +150,15 @@ def calculate_eligibility(user, criteria):
 
         if result:
             satisfied_criteria += 1
+            label = criterion_labels.get(criterion_type, criterion_type.replace("_", " ").capitalize())
+            satisfied_details.append(
+                f"{label} requirement met: {user_value}"
+            )
         else:
+            label = criterion_labels.get(criterion_type, criterion_type.replace("_", " ").capitalize())
+            actual_value = user_value if user_value is not None and str(user_value).strip() else "Not provided"
             failed_criteria.append(
-                f"{criterion_type} {operator} {criterion_value}"
+                f"{label}: {actual_value} (required {operator_labels.get(operator, operator)} {criterion_value})"
             )
 
     # Calculate score
@@ -133,6 +172,8 @@ def calculate_eligibility(user, criteria):
     # Eligible only when all criteria are satisfied
     eligible = (
         total_criteria > 0
+        and has_substantive_criteria
+        and not missing_criteria
         and satisfied_criteria == total_criteria
     )
 
@@ -141,5 +182,8 @@ def calculate_eligibility(user, criteria):
         "match_score": round(match_score, 2),
         "satisfied": satisfied_criteria,
         "total": total_criteria,
+        "has_substantive_criteria": has_substantive_criteria,
+        "satisfied_criteria": satisfied_details,
+        "missing_criteria": missing_criteria,
         "failed_criteria": failed_criteria
     }

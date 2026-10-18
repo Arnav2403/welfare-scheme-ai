@@ -227,6 +227,52 @@ footer {
     margin-bottom: 30px;
 }
 
+.submitted-profile {
+    margin: 22px 0 28px;
+    padding: 16px 20px;
+    background: #f8fafc;
+    border: 1px solid #d9e2ec;
+    border-radius: 8px;
+}
+
+.submitted-profile summary {
+    color: #1f4e79;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.profile-entry-groups {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
+    margin-top: 18px;
+}
+
+.profile-entry-groups h3 {
+    margin: 0 0 10px;
+    color: #1f4e79;
+    font-size: 16px;
+}
+
+.profile-entry-groups dl {
+    margin: 0;
+}
+
+.profile-entry {
+    margin-bottom: 9px;
+}
+
+.profile-entry dt {
+    color: #667085;
+    font-size: 13px;
+}
+
+.profile-entry dd {
+    margin: 2px 0 0;
+    color: #263445;
+    overflow-wrap: anywhere;
+}
+
 
 /* Scheme Card */
 
@@ -484,6 +530,36 @@ footer {
     color: #c0392b;
 }
 
+.status.needs-criteria {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.scheme-badges {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.scheme-rank,
+.scheme-unranked {
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.scheme-rank {
+    background: #eaf2f8;
+    color: #1f4e79;
+}
+
+.scheme-unranked {
+    background: #f0f1f3;
+    color: #59636e;
+}
+
 
 /* DESCRIPTION */
 
@@ -593,6 +669,46 @@ footer {
 
 /* FAILED CRITERIA */
 
+.satisfied-section {
+    margin: 0 0 16px;
+}
+
+.satisfied-section h4 {
+    color: #218838;
+}
+
+.satisfied-section ul {
+    padding-left: 22px;
+}
+
+.satisfied-section li {
+    color: #43515e;
+    margin-bottom: 6px;
+}
+
+.eligibility-guidance {
+    margin: 16px 0;
+    padding: 14px 16px;
+    background: #fffaf0;
+    border-left: 4px solid #d4a72c;
+    border-radius: 6px;
+}
+
+.eligibility-guidance h4 {
+    margin-bottom: 8px;
+    color: #6b4e00;
+}
+
+.eligibility-guidance ul {
+    padding-left: 22px;
+    margin-bottom: 0;
+}
+
+.eligibility-guidance li {
+    color: #43515e;
+    margin-bottom: 7px;
+}
+
 .failed-section {
     margin-top: 15px;
     padding-top: 15px;
@@ -655,4 +771,460 @@ footer {
         padding: 20px;
     }
 
+}
+
+/* Clearer scheme result groups and requirement checks */
+.result-description {
+    line-height: 1.6;
+    max-width: 850px;
+}
+
+.scheme-group {
+    margin: 30px 0 36px;
+}
+
+.scheme-group-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.scheme-group-heading h3 {
+    color: #263445;
+    font-size: 20px;
+}
+
+.scheme-group-eligible .scheme-group-heading h3 {
+    color: #18733c;
+}
+
+.scheme-group-not_eligible .scheme-group-heading h3 {
+    color: #b42318;
+}
+
+.scheme-group-needs_information .scheme-group-heading h3 {
+    color: #856404;
+}
+
+.scheme-group-cards {
+    display: grid;
+    gap: 16px;
+}
+
+.scheme-card {
+    margin: 0;
+    box-shadow: 0 2px 8px rgba(16, 24, 40, 0.05);
+    transition: box-shadow 160ms ease, transform 160ms ease;
+}
+
+.scheme-card:hover {
+    box-shadow: 0 7px 20px rgba(16, 24, 40, 0.09);
+    transform: translateY(-1px);
+}
+
+.scheme-card-eligible {
+    border-left: 4px solid #218838;
+}
+
+.scheme-card-needs_information {
+    border-left: 4px solid #d4a72c;
+}
+
+.scheme-card-not_eligible {
+    border-left: 4px solid #d9534f;
+}
+
+.scheme-badges {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.status::before {
+    display: inline-block;
+    margin-right: 6px;
+}
+
+.status.eligible::before { content: "✓"; }
+.status.not-eligible::before { content: "×"; }
+.status.needs-criteria::before { content: "i"; }
+
+.result-summary {
+    margin: -8px 0 18px;
+    padding: 10px 13px;
+    border-radius: 7px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.result-summary-eligible {
+    background: #f0faf3;
+    color: #24633b;
+}
+
+.result-summary-needs_information {
+    background: #fff9e8;
+    color: #765a0b;
+}
+
+.result-summary-not_eligible {
+    background: #fff4f3;
+    color: #9c2f28;
+}
+
+.scheme-badges .status,
+.scheme-badges .scheme-rank,
+.scheme-badges .scheme-unranked {
+    display: inline-flex;
+    align-items: center;
+}
+
+.eligibility-guidance {
+    padding: 16px;
+}
+
+.requirement-list {
+    display: grid;
+    gap: 8px;
+}
+
+.requirement-row {
+    display: grid;
+    grid-template-columns: 28px minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 10px;
+    padding: 11px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 7px;
+    background: #fff;
+}
+
+.requirement-status {
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    font-weight: 700;
+}
+
+.requirement-satisfied .requirement-status,
+.requirement-satisfied .requirement-outcome {
+    color: #18733c;
+    background: #e8f6ec;
+}
+
+.requirement-not-satisfied .requirement-status,
+.requirement-not-satisfied .requirement-outcome {
+    color: #b42318;
+    background: #fdebea;
+}
+
+.requirement-not-checked .requirement-status,
+.requirement-not-checked .requirement-outcome {
+    color: #765a0b;
+    background: #fff3cd;
+}
+
+.requirement-row strong {
+    color: #263445;
+}
+
+.requirement-row p {
+    margin: 3px 0;
+    font-size: 14px;
+}
+
+.requirement-row small {
+    color: #667085;
+    line-height: 1.4;
+}
+
+.requirement-outcome {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+@media (max-width: 700px) {
+    .results-card h2 {
+        font-size: 25px;
+    }
+
+    .scheme-group-heading h3 {
+        font-size: 18px;
+    }
+
+    .scheme-badges {
+        justify-content: flex-start;
+    }
+
+    .requirement-row {
+        grid-template-columns: 24px minmax(0, 1fr);
+    }
+
+    .requirement-outcome {
+        grid-column: 2;
+        justify-self: start;
+    }
+}
+
+/* Profile form layout */
+.form-card {
+    max-width: 960px;
+    padding: 40px 44px;
+    border: 1px solid #e4eaf1;
+}
+
+.profile-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+.form-eyebrow {
+    display: block;
+    margin-bottom: 8px;
+    color: #527394;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+}
+
+.profile-title-row h2 {
+    margin-bottom: 0;
+}
+
+.form-step-badge {
+    padding: 8px 12px;
+    border: 1px solid #d6e3ef;
+    border-radius: 20px;
+    background: #f2f7fb;
+    color: #1f4e79;
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.form-description {
+    max-width: 700px;
+    line-height: 1.6;
+}
+
+.form-grid {
+    column-gap: 24px;
+    row-gap: 22px;
+}
+
+.profile-section-heading,
+.student-section,
+.farmer-section {
+    grid-column: 1 / -1;
+    align-items: center;
+    gap: 13px;
+    margin-top: 10px;
+    padding: 16px 18px;
+    border: 1px solid #e1eaf2;
+    border-radius: 10px;
+    background: linear-gradient(110deg, #f4f8fc, #fbfdff);
+}
+
+.profile-section-heading {
+    display: flex;
+}
+
+.student-section,
+.farmer-section {
+    margin-top: 12px;
+}
+
+.profile-section-heading h3,
+.student-section h3,
+.farmer-section h3 {
+    margin: 0 0 4px;
+    color: #1f4e79;
+    font-size: 17px;
+}
+
+.profile-section-heading p,
+.student-section p,
+.farmer-section p {
+    margin: 0;
+    color: #667085;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.section-number {
+    display: grid;
+    place-items: center;
+    flex: 0 0 32px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #1f4e79;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.form-group label {
+    font-size: 14px;
+}
+
+.form-group input,
+.form-group select {
+    min-height: 46px;
+    border-color: #d4dce5;
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.form-group input:hover,
+.form-group select:hover {
+    border-color: #9aafc2;
+}
+
+.field-help {
+    margin-top: 6px;
+    color: #667085;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.profile-submit-area {
+    margin-top: 28px;
+    padding: 20px;
+    border-radius: 10px;
+    background: #f4f8fb;
+    text-align: center;
+}
+
+.profile-submit-area p {
+    margin-bottom: 14px;
+    color: #667085;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.profile-submit-area .submit-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: auto;
+    min-width: 260px;
+    margin: 0;
+    box-shadow: 0 4px 10px rgba(31, 78, 121, 0.18);
+}
+
+.profile-submit-area .submit-button span {
+    font-size: 20px;
+    line-height: 1;
+}
+
+@media (max-width: 700px) {
+    .form-card {
+        padding: 26px 20px;
+    }
+
+    .profile-title-row {
+        align-items: flex-start;
+    }
+
+    .form-step-badge {
+        font-size: 12px;
+    }
+
+    .profile-section-heading,
+    .student-section,
+    .farmer-section {
+        padding: 14px;
+    }
+
+    .profile-submit-area .submit-button {
+        width: 100%;
+        min-width: 0;
+    }
+}
+
+/* Simplified landing page */
+.home-page .header {
+    padding: 22px 0;
+}
+
+.home-hero {
+    margin-top: 30px;
+    padding: 42px 28px;
+}
+
+.home-eyebrow {
+    display: inline-block;
+    margin-bottom: 10px;
+    color: #527394;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.1px;
+}
+
+.home-hero h2 {
+    margin-bottom: 10px;
+    font-size: 32px;
+}
+
+.home-hero p {
+    max-width: 670px;
+    margin: 0 auto 22px;
+    line-height: 1.6;
+}
+
+.home-hero .start-button {
+    padding: 13px 22px;
+    font-weight: 700;
+}
+
+.home-hero .start-button span {
+    margin-left: 8px;
+    font-size: 19px;
+}
+
+.home-topics {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0 auto 30px;
+}
+
+.home-topics span {
+    padding: 9px 14px;
+    border: 1px solid #dce5ee;
+    border-radius: 24px;
+    background: #fff;
+    color: #365a78;
+    font-size: 14px;
+}
+
+@media (max-width: 700px) {
+    .home-hero {
+        margin-top: 20px;
+        padding: 32px 20px;
+    }
+
+    .home-hero h2 {
+        font-size: 26px;
+    }
+
+    .home-topics {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .home-topics span {
+        text-align: center;
+    }
 }
