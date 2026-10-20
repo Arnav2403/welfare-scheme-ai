@@ -1,14 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Checking Eligibility</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checking Eligibility - Welfare Scheme AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <meta http-equiv="refresh" content="1;url=/check/{{ user_id }}">
 </head>
-
-<body>
-
-    <h2>Analyzing your profile...</h2>
-    <p>Please wait while we check eligible welfare schemes.</p>
-
+<body class="redirect-page">
+    <div class="redirect-box">
+        <div class="redirect-spinner"></div>
+        <h2>Analyzing your profile…</h2>
+        <p>Please wait while we check eligible welfare schemes.</p>
+    </div>
 </body>
 </html>
