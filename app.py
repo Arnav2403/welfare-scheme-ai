@@ -114,8 +114,15 @@ def home():
 
 
 @app.route("/profile")
-def profile():
-    return render_template("profile.html")
+@app.route("/profile/<int:user_id>")
+def profile(user_id=None):
+    user = None
+    if user_id:
+        cursor = db.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM users WHERE user_id = %s", (user_id,))
+        user = cursor.fetchone()
+        cursor.close()
+    return render_template("profile.html", user=user)
 
 
 @app.route("/check/<int:user_id>")
@@ -512,11 +519,89 @@ def recommend():
         or None
     )
 
+    values = (
+        name,
+        age,
+        gender,
+        annual_income,
+        occupation,
+        education,
+        location,
+        category,
+        domicile,
+        admission_mode,
+        children_count,
+        percentage_12th,
+        course_stream,
+        graduation_percentage,
+        is_pg_student,
+        minority_status,
+        hostel_status,
+        parent_occupation,
+        disability_status,
+        ex_serviceman_child,
+        freedom_fighter_child,
+        farmer_id,
+        land_holding,
+        land_unit,
+        land_ownership,
+        irrigation_type,
+        crop_type,
+        farmer_category,
+        tribal_status
+    )
+
+    existing_user_id = request.form.get("user_id")
+    if existing_user_id:
+        try:
+            existing_user_id = int(existing_user_id)
+        except (ValueError, TypeError):
+            existing_user_id = None
+
+    cursor = db.cursor()
+
+    if existing_user_id:
+        update_query = """
+            UPDATE users SET
+                name = %s,
+                age = %s,
+                gender = %s,
+                annual_income = %s,
+                occupation = %s,
+                education = %s,
+                location = %s,
+                category = %s,
+                domicile = %s,
+                admission_mode = %s,
+                children_count = %s,
+                percentage_12th = %s,
+                course_stream = %s,
+                graduation_percentage = %s,
+                is_pg_student = %s,
+                minority_status = %s,
+                hostel_status = %s,
+                parent_occupation = %s,
+                disability_status = %s,
+                ex_serviceman_child = %s,
+                freedom_fighter_child = %s,
+                farmer_id = %s,
+                land_holding = %s,
+                land_unit = %s,
+                land_ownership = %s,
+                irrigation_type = %s,
+                crop_type = %s,
+                farmer_category = %s,
+                tribal_status = %s
+            WHERE user_id = %s
+        """
+        cursor.execute(update_query, values + (existing_user_id,))
+        db.commit()
+        cursor.close()
+        return redirect_to_check(existing_user_id)
+
     # --------------------------------------------------
     # INSERT USER PROFILE
     # --------------------------------------------------
-
-    cursor = db.cursor()
 
     query = """
         INSERT INTO users
@@ -563,51 +648,9 @@ def recommend():
         )
     """
 
-    values = (
-
-        name,
-        age,
-        gender,
-        annual_income,
-        occupation,
-        education,
-        location,
-        category,
-        domicile,
-        admission_mode,
-
-        children_count,
-        percentage_12th,
-        course_stream,
-        graduation_percentage,
-        is_pg_student,
-
-        minority_status,
-        hostel_status,
-        parent_occupation,
-        disability_status,
-        ex_serviceman_child,
-        freedom_fighter_child,
-
-        farmer_id,
-        land_holding,
-        land_unit,
-        land_ownership,
-        irrigation_type,
-        crop_type,
-        farmer_category,
-        tribal_status
-    )
-
-    cursor.execute(
-        query,
-        values
-    )
-
+    cursor.execute(query, values)
     db.commit()
-
     user_id = cursor.lastrowid
-
     cursor.close()
 
     return redirect_to_check(user_id)
